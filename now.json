@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "name": "finager",
+  "builds": [
+    { "src": "api/**/*.js", "use": "@now/node" }
+  ],
+  "routes": [
+    {
+      "src": "/payments/(?<id>[^/]+)",
+      "dest": "/api/getPayment.js",
+      "methods": ["GET"]
+    }
+  ],
+  "env": {
+    "MONGO_URI": "@finagermongo"
+  }
+}

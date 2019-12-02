@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/rafaelverger/finager#readme",
   "dependencies": {
+    "now": "^16.6.0",
     "openapi-enforcer": "^1.6.2"
   }
 }
