@@ -11,6 +11,6 @@ module.exports = (callback) => (req, res) => apidoc.then(openapi => {
     res.status(500);
     return res.send();
   }
-  const { operation, path, query } = value;
-  callback({ req, res, operation, path, query });
+  const { operation, path, query, body } = value;
+  callback({ req, res, operation, path, query, body });
 });

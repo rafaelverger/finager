@@ -9,6 +9,11 @@
       "src": "/payments/(?<id>[^/]+)",
       "dest": "/api/getPayment.js",
       "methods": ["GET"]
+    },
+    {
+      "src": "/payments",
+      "dest": "/api/addPayment.js",
+      "methods": ["POST"]
     }
   ],
   "env": {
