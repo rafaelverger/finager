@@ -21,5 +21,8 @@
   "bugs": {
     "url": "https://github.com/rafaelverger/finager/issues"
   },
-  "homepage": "https://github.com/rafaelverger/finager#readme"
+  "homepage": "https://github.com/rafaelverger/finager#readme",
+  "dependencies": {
+    "openapi-enforcer": "^1.6.2"
+  }
 }
