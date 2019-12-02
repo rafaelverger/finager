@@ -341,7 +341,7 @@
         }
       },
       "PaymentParty" : {
-        "required" : [ "account_name", "bank_id", "bank_id_code" ],
+        "required" : [ "account_number", "bank_id", "bank_id_code" ],
         "type" : "object",
         "properties" : {
           "account_name" : {
