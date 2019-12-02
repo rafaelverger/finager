@@ -1,12 +1,16 @@
 const apidoc = require('../apidoc');
 
 module.exports = (callback) => (req, res) => apidoc.then(openapi => {
-  const result = openapi.path(req.method.toLowerCase(), req.url);
-  if ( result.error ) {
-    console.error(result.error);
+  const oasRequest = { path: req.url, headers: req.headers, method: req.method };
+  if (req.body) {
+    oasRequest.body = req.body;
+  }
+  const [ value, error ] = openapi.request(oasRequest);
+  if ( error ) {
+    console.error(error);
     res.status(500);
     return res.send();
   }
-  const [{ operation, params }] = result;
-  callback({ req, res, operation, params });
+  const { operation, path, query } = value;
+  callback({ req, res, operation, path, query });
 });
