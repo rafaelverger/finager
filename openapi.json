@@ -381,11 +381,11 @@
       },
       "SchemePaymentSubType" : {
         "type" : "string",
-        "enum" : [ "ImmediatePayment" ]
+        "enum" : [ "InternetBanking" ]
       },
       "SchemePaymentType" : {
         "type" : "string",
-        "enum" : [ "InternetBanking" ]
+        "enum" : [ "ImmediatePayment" ]
       },
       "PaymentCharges_sender_charges" : {
         "required" : [ "amount", "currency" ],
