@@ -13,8 +13,8 @@
     "version" : "1.0.0"
   },
   "servers" : [ {
-    "url" : "https://virtserver.swaggerhub.com/rafaelverger/finager/1.0.0",
-    "description" : "SwaggerHub API Auto Mocking"
+    "url" : "https://finager.now.sh/",
+    "description" : "Finager API"
   } ],
   "paths" : {
     "/payments" : {

@@ -2,7 +2,9 @@
   "version": 2,
   "name": "finager",
   "builds": [
-    { "src": "api/**/*.js", "use": "@now/node" }
+    { "src": "api/**/*.js", "use": "@now/node" },
+    { "src": "index.html", "use": "@now/static" },
+    { "src": "openapi.json", "use": "@now/static" }
   ],
   "routes": [
     {
@@ -14,6 +16,14 @@
       "src": "/payments",
       "dest": "/api/addPayment.js",
       "methods": ["POST"]
+    },
+    {
+      "src": "/open-api-spec",
+      "dest": "/openapi.json"
+    },
+    {
+      "src": "/",
+      "dest": "/index.html"
     }
   ],
   "env": {
