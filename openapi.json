@@ -94,11 +94,13 @@
         "responses" : {
           "201" : {
             "description" : "payment created",
-            "headers": {
-              "location": {
-                "schema": {
-                  "type": "string",
-                  "description": "The URL of created payment document"
+            "headers" : {
+              "location" : {
+                "description" : "The URL of created payment document",
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
@@ -160,7 +162,7 @@
           }
         } ],
         "responses" : {
-          "201" : {
+          "204" : {
             "description" : "payment deleted"
           },
           "404" : {
