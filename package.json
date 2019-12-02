@@ -1,0 +1,25 @@
+{
+  "name": "finager",
+  "version": "1.0.0",
+  "description": "Discover where ur money is with this awesome finance manager",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rafaelverger/finager.git"
+  },
+  "keywords": [
+    "Finance",
+    "Manager",
+    "Node",
+    "OpenSource"
+  ],
+  "author": "rafaelverger",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/rafaelverger/finager/issues"
+  },
+  "homepage": "https://github.com/rafaelverger/finager#readme"
+}
