@@ -1,0 +1,405 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "Finager",
+    "description" : "An API to handle your payments",
+    "contact" : {
+      "email" : "rafael@rafaelverger.com.br"
+    },
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "https://virtserver.swaggerhub.com/rafaelverger/finager/1.0.0",
+    "description" : "SwaggerHub API Auto Mocking"
+  } ],
+  "paths" : {
+    "/payments" : {
+      "get" : {
+        "summary" : "searches payments",
+        "description" : "Using appropriate params, you can search for payments in the system.\nResources are sorted by \"attributes.processing_date\" and \"id\"\n",
+        "operationId" : "listPayments",
+        "parameters" : [ {
+          "name" : "organisation_id",
+          "in" : "query",
+          "description" : "the id of the related organisation in the payment",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "skip",
+          "in" : "query",
+          "description" : "number of records to skip for pagination",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "minimum" : 0,
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 0
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "maximum number of records to return",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "maximum" : 50,
+            "minimum" : 1,
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 10
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "search results matching criteria",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Payment"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "bad input parameter"
+          }
+        }
+      },
+      "post" : {
+        "summary" : "adds a payment document",
+        "operationId" : "addPayment",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Payment"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "payment created",
+            "headers": {
+              "location": {
+                "schema": {
+                  "type": "string",
+                  "description": "The URL of created payment document"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "invalid input, object invalid"
+          },
+          "409" : {
+            "description" : "an existing item already exists"
+          }
+        }
+      }
+    },
+    "/payments/{id}" : {
+      "get" : {
+        "summary" : "get a single payment document",
+        "operationId" : "getPayment",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Payment ID",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "format" : "uuid"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "payment found",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Payment"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "payment not found"
+          }
+        }
+      },
+      "delete" : {
+        "summary" : "delete a payment document",
+        "operationId" : "deletePayment",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Payment ID",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "format" : "uuid"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "payment deleted"
+          },
+          "404" : {
+            "description" : "payment not found"
+          }
+        }
+      },
+      "patch" : {
+        "summary" : "update attributes object of payment document",
+        "operationId" : "updatedPayment",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Payment ID",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "format" : "uuid"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Payment"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "payment document updated",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Payment"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Currency" : {
+        "type" : "string",
+        "enum" : [ "GBP", "BRL", "EUR", "USD" ]
+      },
+      "Forex" : {
+        "required" : [ "contract_reference", "exchange_rate", "original_amount", "original_currency" ],
+        "type" : "object",
+        "properties" : {
+          "contract_reference" : {
+            "type" : "string"
+          },
+          "exchange_rate" : {
+            "type" : "number",
+            "format" : "float"
+          },
+          "original_amount" : {
+            "type" : "number",
+            "format" : "float"
+          },
+          "original_currency" : {
+            "$ref" : "#/components/schemas/Currency"
+          }
+        }
+      },
+      "Payment" : {
+        "required" : [ "attributes", "organisation_id", "type" ],
+        "type" : "object",
+        "properties" : {
+          "attributes" : {
+            "$ref" : "#/components/schemas/PaymentAttributes"
+          },
+          "id" : {
+            "type" : "string",
+            "format" : "uuid",
+            "readOnly" : true
+          },
+          "organisation_id" : {
+            "type" : "string",
+            "format" : "uuid"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "Payment" ]
+          },
+          "version" : {
+            "type" : "integer",
+            "description" : "The version of this payment document",
+            "format" : "int32",
+            "readOnly" : true
+          }
+        }
+      },
+      "PaymentAttributes" : {
+        "type" : "object",
+        "properties" : {
+          "amount" : {
+            "type" : "number",
+            "description" : "The payment amount with 2 decimal places precision",
+            "format" : "float"
+          },
+          "beneficiary_party" : {
+            "$ref" : "#/components/schemas/PaymentParty"
+          },
+          "charges_information" : {
+            "$ref" : "#/components/schemas/PaymentCharges"
+          },
+          "currency" : {
+            "$ref" : "#/components/schemas/Currency"
+          },
+          "debtor_party" : {
+            "$ref" : "#/components/schemas/PaymentParty"
+          },
+          "end_to_end_reference" : {
+            "type" : "string",
+            "description" : "A payment description that will be visible to all parties",
+            "example" : "Business lunch with Hector & Helbert"
+          },
+          "fx" : {
+            "$ref" : "#/components/schemas/Forex"
+          },
+          "numeric_reference" : {
+            "type" : "integer",
+            "description" : "Numeric reference for this payment",
+            "format" : "int64"
+          },
+          "payment_id" : {
+            "type" : "string"
+          },
+          "payment_purpose" : {
+            "type" : "string"
+          },
+          "payment_scheme" : {
+            "$ref" : "#/components/schemas/PaymentScheme"
+          },
+          "payment_type" : {
+            "$ref" : "#/components/schemas/PaymentType"
+          },
+          "processing_date" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "reference" : {
+            "type" : "string",
+            "description" : "A personal description of this payment"
+          },
+          "scheme_payment_sub_type" : {
+            "$ref" : "#/components/schemas/SchemePaymentSubType"
+          },
+          "scheme_payment_type" : {
+            "$ref" : "#/components/schemas/SchemePaymentType"
+          },
+          "sponsor_party" : {
+            "$ref" : "#/components/schemas/PaymentParty"
+          }
+        }
+      },
+      "PaymentCharges" : {
+        "required" : [ "bearer_code", "sender_charges" ],
+        "type" : "object",
+        "properties" : {
+          "bearer_code" : {
+            "type" : "string"
+          },
+          "sender_charges" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/PaymentCharges_sender_charges"
+            }
+          }
+        }
+      },
+      "PaymentParty" : {
+        "required" : [ "account_name", "bank_id", "bank_id_code" ],
+        "type" : "object",
+        "properties" : {
+          "account_name" : {
+            "type" : "string"
+          },
+          "account_number" : {
+            "type" : "string"
+          },
+          "account_number_code" : {
+            "type" : "string"
+          },
+          "account_type" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "address" : {
+            "type" : "string"
+          },
+          "bank_id" : {
+            "type" : "string"
+          },
+          "bank_id_code" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        }
+      },
+      "PaymentScheme" : {
+        "type" : "string",
+        "enum" : [ "FPS" ]
+      },
+      "PaymentType" : {
+        "type" : "string",
+        "enum" : [ "Credit", "Debit" ]
+      },
+      "SchemePaymentSubType" : {
+        "type" : "string",
+        "enum" : [ "ImmediatePayment" ]
+      },
+      "SchemePaymentType" : {
+        "type" : "string",
+        "enum" : [ "InternetBanking" ]
+      },
+      "PaymentCharges_sender_charges" : {
+        "required" : [ "amount", "currency" ],
+        "type" : "object",
+        "properties" : {
+          "amount" : {
+            "type" : "number",
+            "format" : "float"
+          },
+          "currency" : {
+            "$ref" : "#/components/schemas/Currency"
+          }
+        }
+      }
+    }
+  }
+}
