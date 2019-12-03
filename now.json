@@ -3,7 +3,6 @@
   "name": "finager",
   "builds": [
     { "src": "api/**/*.js", "use": "@now/node" },
-    { "src": "index.html", "use": "@now/static" },
     { "src": "openapi.json", "use": "@now/static" }
   ],
   "routes": [
@@ -20,10 +19,6 @@
     {
       "src": "/open-api-spec",
       "dest": "/openapi.json"
-    },
-    {
-      "src": "/",
-      "dest": "/index.html"
     }
   ],
   "env": {
