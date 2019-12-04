@@ -334,6 +334,13 @@
           "bearer_code" : {
             "type" : "string"
           },
+          "receiver_charges_amount": {
+            "type" : "number",
+            "format" : "float"
+          },
+          "receiver_charges_currency": {
+            "$ref" : "#/components/schemas/Currency"
+          },
           "sender_charges" : {
             "type" : "array",
             "items" : {
