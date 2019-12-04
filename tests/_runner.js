@@ -4,6 +4,8 @@ const mongoUnit = require('mongo-unit');
 const request = require('request-promise-native');
 
 
+const [_, __, reportFileDest] = process.argv;
+
 /**
  * This setup/teardown file should not exist and those steps should be handled
  * by AVA itself, but when I was trying to run AVA's Before hook asynchronously
@@ -58,22 +60,32 @@ const teardown = async () => {
 };
 
 const runTest = () => new Promise((resolve) => {
-  const proc = spawn('npm', ['run', 'test:run']);
+  let cmd = 'test:run';
+  if (reportFileDest) {
+    console.log(`Test report file destination: ${reportFileDest}`);
+    cmd = `${cmd}:tap`;
+  }
+  let output = '';
+  const proc = spawn('npm', ['run', cmd, reportFileDest ? ` | tap-xunit > ${reportFileDest}` : '']);
   proc.on('exit', (code) => {
     console.log(`[AVA] Exited with code: ${code}`);
+    if (reportFileDest) writeFileSync(reportFileDest, output);
     resolve(code);
   });
-  proc.stdout.on('data', d => console.log(d.toString()));
   proc.stderr.on('data', d => console.error(d.toString()));
+  proc.stdout.on('data', d => {
+    output += d;
+    console.log(d.toString())
+  });
 });
 
 setup()
   .then(runTest)
+  .catch(err => {
+    console.error(err);
+    return 1;
+  })
   .then(async exitCode => {
     await teardown();
     process.exit(exitCode);
-  })
-  .catch(err => {
-    console.error(err);
-    process.exit(1);
   });
