@@ -1,0 +1,6 @@
+box: node:12
+
+build:
+  steps:
+    - npm-install
+    - npm-test
