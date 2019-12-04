@@ -66,7 +66,7 @@ const runTest = () => new Promise((resolve) => {
     cmd = `${cmd}:tap`;
   }
   let output = '';
-  const proc = spawn('npm', ['run', cmd, reportFileDest ? ` | tap-xunit > ${reportFileDest}` : '']);
+  const proc = spawn('npm', ['run', cmd]);
   proc.on('exit', (code) => {
     console.log(`[AVA] Exited with code: ${code}`);
     if (reportFileDest) writeFileSync(reportFileDest, output);
