@@ -19,6 +19,8 @@ jobs:
             - ./node_modules
       - run:
           name: test
-          command: npm test
+          command: |
+            mkdir -p ~/reports
+            npm test ~/reports/integration-test.xml
       - store_test_results:
-          path: test_report.xml
+          path: ~/reports
