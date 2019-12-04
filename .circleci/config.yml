@@ -21,8 +21,7 @@ jobs:
           name: test
           command: |
             mkdir -p ~/reports
-            npm test ~/reports/integration-test.xml
+            npm test
             ls -las ~/reports/
-            cat ~/reports/integration-test.xml
       - store_test_results:
           path: ~/reports
