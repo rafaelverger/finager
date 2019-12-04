@@ -21,4 +21,4 @@ jobs:
           name: test
           command: npm test
       - store_test_results:
-          path: .test_reports
+          path: test_report.xml

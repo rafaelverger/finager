@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "node tests/_runner.js",
-    "test:run": "ava --tap tests/integration.js | tap-xunit > .test_reports/ava.xml"
+    "test:run": "ava --tap tests/integration.js | tap-xunit > test_report.xml"
   },
   "repository": {
     "type": "git",
