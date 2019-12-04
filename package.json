@@ -4,7 +4,8 @@
   "description": "Discover where ur money is with this awesome finance manager",
   "main": "index.js",
   "scripts": {
-    "test": "ava tests.js"
+    "test": "node tests/_runner.js",
+    "test:run": "ava tests/integration.js"
   },
   "repository": {
     "type": "git",
