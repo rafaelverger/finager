@@ -30,7 +30,7 @@ const startDevServer = (port) => {
 
   // Start server
   const server = http.createServer(function (req, res) {
-    console.debug(`[DEV SERVER] Request received at ${req.url}`);
+    console.debug(`[DEV SERVER] Request[${req.method}] received at ${req.url}`);
     router(req, res, finalhandler(req, res));
   });
   server.listen(port, () => {
