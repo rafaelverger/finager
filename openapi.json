@@ -189,7 +189,7 @@
           "content" : {
             "application/json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/Payment"
+                "$ref" : "#/components/schemas/PaymentAttributes"
               }
             }
           }

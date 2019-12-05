@@ -17,6 +17,11 @@
       "methods": ["GET"]
     },
     {
+      "src": "/payments/(?<id>[^/]+)",
+      "dest": "/api/updatePayment.js",
+      "methods": ["PATCH"]
+    },
+    {
       "src": "/payments",
       "dest": "/api/addPayment.js",
       "methods": ["POST"]

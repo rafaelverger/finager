@@ -73,7 +73,7 @@ test.before(t => {
 test.todo('assert empty list');
 
 let TEST_PAYMENT_URL;
-test.serial('assert POST -- serial', async t => {
+test.serial('assert POST', async t => {
   await request
     .post({
       url: `${process.env.DEV_SERVER}/payments`,
@@ -91,7 +91,7 @@ test.serial('assert POST -- serial', async t => {
     });
 });
 
-test.serial('assert GET -- serial', t => request
+test.serial('assert GET', t => request
   .get(TEST_PAYMENT_URL)
   .then(payment => {
     const paymentObj = JSON.parse(payment);
@@ -101,7 +101,6 @@ test.serial('assert GET -- serial', t => request
     // processing_date is sent as date string but it is stored as datetime
     expected.attributes.processing_date = new Date(expected.attributes.processing_date).toISOString();
     t.deepEqual(paymentObj, expected);
-    // t.fail();
   })
   .catch(err => {
     console.error(err);
@@ -109,8 +108,41 @@ test.serial('assert GET -- serial', t => request
   })
 );
 
-test.todo('assert PATCH -- serial');
-test.todo('assert GET UPDATED -- serial');
+test.serial('assert PATCH', async t => {
+  const attributes = {
+    amount: parseInt(Math.random() * 1e5)/100,
+    beneficiary_party: {
+      account_number: `${parseInt(Math.random() * 1e8)}`,
+      bank_id: `BKID-${Math.random()}`,
+      bank_id_code: new Array(5).fill().map(() => String.fromCharCode( 65 + parseInt(Math.random() * 1e3) % 27 )).join('')
+    }
+  };
+  await request
+    .patch({
+      url: TEST_PAYMENT_URL,
+      body: attributes,
+      json: true,
+    })
+    .then(updatedPayment => {
+      t.is(updatedPayment.attributes.amount, attributes.amount);
+      t.is(updatedPayment.attributes.beneficiary_party.account_number, attributes.beneficiary_party.account_number);
+      t.is(updatedPayment.attributes.beneficiary_party.bank_id, attributes.beneficiary_party.bank_id);
+      t.is(updatedPayment.attributes.beneficiary_party.bank_id_code, attributes.beneficiary_party.bank_id_code);
+      // make sure only presented props are updated and old ones are kept the same
+      t.notDeepEqual(updatedPayment.attributes.beneficiary_party, attributes.beneficiary_party);
+
+      // make sure those changes are really stored
+      request
+        .get(TEST_PAYMENT_URL)
+        .then(payment => JSON.parse(payment))
+        .then(payment => t.deepEqual(payment, updatedPayment));
+    })
+    .catch(err => {
+      console.error(err);
+      t.fail();
+    })
+});
+
 test.todo('assert DELETE -- serial');
 test.todo('assert GET not found -- serial');
 
