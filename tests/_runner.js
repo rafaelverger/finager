@@ -47,7 +47,10 @@ const runTest = () => new Promise((resolve) => {
   const proc = spawn('npm', ['run', cmd]);
   proc.on('exit', (code) => {
     console.log(`[AVA] Exited with code: ${code}`);
-    if (reportFileDest) writeFileSync(reportFileDest, output);
+    if (reportFileDest) {
+      const xmlOutput = output.substring(output.indexOf('<?xml version="1.0"?>'));
+      writeFileSync(reportFileDest, xmlOutput);
+    }
     resolve(code);
   });
   proc.stderr.on('data', d => console.error(d.toString()));
