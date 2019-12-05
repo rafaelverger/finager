@@ -1,12 +1,14 @@
 const handler = require('./_reqhandler');
 const { connect, models } = require('../db');
 
-module.exports = handler(async ({ res, path }) => {
+module.exports = handler(async ({ res, path }, done) => {
   await connect();
   const paydoc = await models.Payment.findOne({ _id: path.id });
   if ( !paydoc ) {
-    res.status(404);
-    return res.send();
+    res.statusCode = 404;
+    return res.end();
   }
-  res.json(paydoc);
+
+  res.writeHead(200, { 'Content-Type': 'application/json' }).end(JSON.stringify(paydoc));
+  done();
 });

@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/rafaelverger/finager#readme",
   "dependencies": {
+    "finalhandler": "^1.1.2",
     "mongoose": "^5.7.13",
     "now": "^16.6.0",
     "openapi-enforcer": "^1.6.2",
