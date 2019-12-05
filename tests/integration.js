@@ -143,8 +143,18 @@ test.serial('assert PATCH', async t => {
     })
 });
 
-test.todo('assert DELETE -- serial');
-test.todo('assert GET not found -- serial');
+test.serial('assert DELETE', t => request
+  .delete({ url: TEST_PAYMENT_URL, resolveWithFullResponse: true })
+  .then(response => {
+    t.is(response.statusCode, 204);
+    return request.get({ url: TEST_PAYMENT_URL, simple: false, resolveWithFullResponse: true })
+  })
+  .then(response => t.is(response.statusCode, 404))
+  .catch(err => {
+    console.error(err);
+    t.fail();
+  })
+);
 
 test.todo('assert POST -- rand doc x 3');
 test.todo('assert existing list -- serial');

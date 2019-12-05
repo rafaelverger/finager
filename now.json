@@ -22,6 +22,11 @@
       "methods": ["PATCH"]
     },
     {
+      "src": "/payments/(?<id>[^/]+)",
+      "dest": "/api/deletePayment.js",
+      "methods": ["DELETE"]
+    },
+    {
       "src": "/payments",
       "dest": "/api/addPayment.js",
       "methods": ["POST"]
