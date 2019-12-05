@@ -1,11 +1,6 @@
 {
   "version": 2,
   "name": "finager",
-  "build": {
-    "env": {
-      "NODEJS_HELPERS": "0"
-    }
-  },
   "builds": [
     { "src": "api/**/*.js", "use": "@now/node" },
     { "src": "openapi.json", "use": "@now/static" }
@@ -42,6 +37,7 @@
     }
   ],
   "env": {
-    "MONGO_URI": "@finagermongo"
+    "MONGO_URI": "@finagermongo",
+    "NODEJS_HELPERS": "0"
   }
 }
