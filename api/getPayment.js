@@ -9,6 +9,7 @@ module.exports = handler(async ({ res, path }, done) => {
     return res.end();
   }
 
-  res.writeHead(200, { 'Content-Type': 'application/json' }).end(JSON.stringify(paydoc));
+  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify(paydoc));
   done();
 });

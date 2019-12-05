@@ -11,6 +11,7 @@ module.exports = handler(async ({ res, query }, done) => {
     .sort({ _id: 'asc', 'attributes.processing_date': 'asc' })
     .exec();
   
-  res.writeHead(200, { 'Content-Type': 'application/json' }).end(JSON.stringify(payments));
+  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify(payments));
   done();
 });

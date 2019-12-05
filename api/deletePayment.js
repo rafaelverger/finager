@@ -7,10 +7,12 @@ module.exports = handler(async ({ res, path }, done) => {
     .deleteOne({ _id: path.id })
     .then(({ ok, deletedCount, n }) => {
       const status = ok && deletedCount > 0 ? 204 : 404;
-      res.writeHead(status).end();
+      res.writeHead(status);
+      res.end();
     })
     .catch(err => {
-      res.writeHead(500).end(err.message);
+      res.writeHead(500);
+      res.end(err.message);
     })
     .then(done);
 });

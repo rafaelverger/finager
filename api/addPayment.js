@@ -11,7 +11,8 @@ module.exports = handler(async ({ req, res, body }, done) => {
       return res.end('An error occurred when trying to save this payment');
     }
 
-    res.writeHead(201, {'location': `${req.url}/${paydoc._id}`}).end();
+    res.writeHead(201, {'location': `${req.url}/${paydoc._id}`});
+    res.end();
     done();
   });
 });
