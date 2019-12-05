@@ -3,6 +3,7 @@ jobs:
   build:
     docker:
       - image: circleci/node:12
+      - image: circleci/mongo:4.1.9
     steps:
       - checkout
       - run:
@@ -21,7 +22,7 @@ jobs:
           name: test
           command: |
             mkdir -p ~/reports
-            npm test
-            ls -las ~/reports/
+            export MONGO_URI=mongodb://localhost:27017/test
+            npm test ~/reports/integration-test.xml
       - store_test_results:
           path: ~/reports
