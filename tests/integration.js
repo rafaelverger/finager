@@ -101,7 +101,7 @@ test.serial('assert GET -- serial', t => request
     // processing_date is sent as date string but it is stored as datetime
     expected.attributes.processing_date = new Date(expected.attributes.processing_date).toISOString();
     t.deepEqual(paymentObj, expected);
-    t.fail();
+    // t.fail();
   })
   .catch(err => {
     console.error(err);
