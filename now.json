@@ -1,6 +1,11 @@
 {
   "version": 2,
   "name": "finager",
+  "build": {
+    "env": {
+      "NODEJS_HELPERS": "0"
+    }
+  },
   "builds": [
     { "src": "api/**/*.js", "use": "@now/node" },
     { "src": "openapi.json", "use": "@now/static" }

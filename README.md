@@ -1,3 +1,4 @@
+![build-status](https://travis-ci.org/rafaelverger/finager.svg?branch=master)
 # Finager
 
 Finager, an API to handle your payments

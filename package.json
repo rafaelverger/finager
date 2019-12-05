@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "node tests/_runner.js",
-    "test:run": "ava tests/integration.js"
+    "test:run": "ava tests/integration.js",
+    "test:run:tap": "ava --tap tests/integration.js | tap-xunit"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,7 @@
   },
   "homepage": "https://github.com/rafaelverger/finager#readme",
   "dependencies": {
+    "finalhandler": "^1.1.2",
     "mongoose": "^5.7.13",
     "now": "^16.6.0",
     "openapi-enforcer": "^1.6.2",
@@ -32,6 +34,8 @@
   "devDependencies": {
     "ava": "^2.4.0",
     "mongo-unit": "^1.5.0",
-    "request-promise-native": "^1.0.8"
+    "request-promise-native": "^1.0.8",
+    "router": "^1.3.3",
+    "tap-xunit": "^2.4.1"
   }
 }

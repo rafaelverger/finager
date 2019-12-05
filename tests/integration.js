@@ -100,7 +100,8 @@ test.serial('assert GET -- serial', t => request
     const expected = { _id: paymentObj._id, __v: paymentObj.__v, ...t.context.rawPayment };
     // processing_date is sent as date string but it is stored as datetime
     expected.attributes.processing_date = new Date(expected.attributes.processing_date).toISOString();
-    t.deepEqual(paymentObj, expected)
+    t.deepEqual(paymentObj, expected);
+    // t.fail();
   })
   .catch(err => {
     console.error(err);
