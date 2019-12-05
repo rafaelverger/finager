@@ -20,7 +20,7 @@
     "/payments" : {
       "get" : {
         "summary" : "searches payments",
-        "description" : "Using appropriate params, you can search for payments in the system.\nResources are sorted by \"attributes.processing_date\" and \"id\"\n",
+        "description" : "Using appropriate params, you can search for payments in the system.\nResources are sorted by \"attributes.processing_date\" ASC and \"id\" ASC\n",
         "operationId" : "listPayments",
         "parameters" : [ {
           "name" : "organisation_id",

@@ -1,9 +1,9 @@
 const test = require('ava');
 
 const request = require('request-promise-native');
+const MUUID = require('uuid-mongodb');
 
-
-test.before(t => {
+test.beforeEach(t => {
   t.context.rawPayment = { 
     "type":"Payment",
     "version":0,
@@ -69,8 +69,6 @@ test.before(t => {
     }
   };
 })
-
-test.todo('assert empty list');
 
 let TEST_PAYMENT_URL;
 test.serial('assert POST', async t => {
@@ -156,6 +154,45 @@ test.serial('assert DELETE', t => request
   })
 );
 
-test.todo('assert POST -- rand doc x 3');
-test.todo('assert existing list -- serial');
-test.todo('assert existing list paginated -- serial');
+test.serial('assert empty list', t => request
+  .get(`${process.env.DEV_SERVER}/payments`)
+  .then(payments => JSON.parse(payments))
+  .then(payments => t.deepEqual(payments, []))
+);
+
+test.serial('assert existing list', async t => {
+  // 4 payments from same org
+  await Promise.all(
+    new Array(4).fill().map(() => request.post({
+      url: `${process.env.DEV_SERVER}/payments`,
+      body: t.context.rawPayment,
+      json: true
+    }))
+  )
+
+  // add a different org
+  await request.post({
+    url: `${process.env.DEV_SERVER}/payments`,
+    body: { ...t.context.rawPayment, organisation_id: MUUID.v1() },
+    json: true
+  });
+
+  await request.get(`${process.env.DEV_SERVER}/payments`)
+    .then(payments => JSON.parse(payments))
+    .then(payments => t.is(payments.length, 5, 'listing without filter should return all payments'));
+
+  const paymentsIds = await request.get(`${process.env.DEV_SERVER}/payments?organisation_id=${t.context.rawPayment.organisation_id}`)
+    .then(payments => JSON.parse(payments))
+    .then(payments => {
+      t.is(payments.length, 4, 'listing filtered by organisation should return only this org payments');
+      return payments.map(p => p._id);
+    });
+
+  await request.get(`${process.env.DEV_SERVER}/payments?organisation_id=${t.context.rawPayment.organisation_id}&skip=1&limit=2`)
+    .then(payments => JSON.parse(payments))
+    .then(payments => {
+      t.is(payments.length, 2, 'listing filtered by organisation with maximun of 2 results');
+      t.is(payments[0]._id, paymentsIds[1]);
+      t.is(payments[1]._id, paymentsIds[2]);
+    });
+});

@@ -32,6 +32,11 @@
       "methods": ["POST"]
     },
     {
+      "src": "/payments",
+      "dest": "/api/listPayments.js",
+      "methods": ["GET"]
+    },
+    {
       "src": "/open-api-spec",
       "dest": "/openapi.json"
     }
