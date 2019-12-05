@@ -14,9 +14,12 @@ const [_, __, reportFileDest] = process.argv;
 let closeDevServer;
 const startDevServer = require('./_devserver');
 const setup = async () => {
-  console.log('Starting mongo...');
-  await mongoUnit.start();
-  process.env.MONGO_URI = mongoUnit.getUrl();
+  if (!process.env.MONGO_URI) {
+    console.log('Starting mongo...');
+    await mongoUnit.start();
+    mongoUnit.__started = true;
+    process.env.MONGO_URI = mongoUnit.getUrl();
+  }
   return startDevServer()
     .then(([stopServer, serverUrl]) => {
       closeDevServer = stopServer;
@@ -26,8 +29,10 @@ const setup = async () => {
 };
 
 const teardown = async () => {
-  console.log('Stopping mongo...')
-  await mongoUnit.stop();
+  if (mongoUnit.__started) {
+    console.log('Stopping mongo...')
+    await mongoUnit.stop();
+  }
   console.log('Stopping dev server...');
   await closeDevServer().then(() => console.log('Teardown completed.'));
 };
